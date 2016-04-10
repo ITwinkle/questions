@@ -22,4 +22,10 @@ class UserController extends SecurityController
         } else {
             $this->redirect('login');
         }
-    }}
+    }
+
+    public function searchAction($string){
+        $expert = User::search($string);
+        return json_encode($expert);
+    }
+}

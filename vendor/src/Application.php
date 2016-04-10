@@ -2,8 +2,10 @@
 
 namespace Vendor;
 
-use Vendor\Response;
+use Vendor\Response\Response;
 use Vendor\Container;
+use Vendor\Response\ResponseInterface;
+
 class Application
 {
     public static $config = [];
@@ -43,7 +45,11 @@ class Application
                 $action         = $refl->getMethod($actionClass);
                 unset($route['controller'],$route['action']);
                 $response = $action->invokeArgs($controller,$route);
-                $response->send();
+                if($response instanceof ResponseInterface) {
+                    $response->send();
+                } else {
+                    echo $response;
+                }
 
             } else {
                 echo 'No such method';

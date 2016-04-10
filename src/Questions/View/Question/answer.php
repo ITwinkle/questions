@@ -12,7 +12,7 @@
                                 <input type="hidden" name="id" value="<?php echo $question['id']?>">
                                 <input type="hidden" name="email" value="<?php echo $question['email']?>">
                                 <input type="hidden" name="expert_id" value="<?php echo $question['expert_id']?>">
-                                <input type="submit" value="Send answer" id="submit">
+                                <input type="submit" class="btn-success" value="Send answer" id="submit">
                             </form>
                     <?php } else { header('location: /'); } ?>
                 </div>

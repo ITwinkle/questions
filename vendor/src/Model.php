@@ -10,6 +10,7 @@ class Model
 
     public static function selectAll($query){
         $pdo = static::$pdo->prepare($query);
+        $pdo->setFetchMode(\PDO::FETCH_ASSOC);
         $pdo->execute();
         return $pdo->fetchAll();
     }

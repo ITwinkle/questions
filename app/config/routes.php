@@ -10,12 +10,20 @@ return [
         'controller' => 'Questions\\Controller\\QuestionController',
         'action' => 'questions',
     ],
+    'search' => [
+        'pattern' => '/search/{string}',
+        'controller' => 'Questions\\Controller\\UserController',
+        'action' => 'search',
+        'requirements' => [
+            'string' => '\w+'
+        ]
+    ],
     'question' => [
         'pattern' => '/questions/{id}',
         'controller' => 'Questions\\Controller\\QuestionController',
         'action' => 'question',
         'requirements' => [
-            'id' => '[\d]+'
+            'id' => '\d+'
         ]
     ],
     'answer' => [

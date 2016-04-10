@@ -32,7 +32,6 @@
     <script src="/js/jquery.form.js"></script>
     <script src="/js/jquery.MetaData.js"></script>
     <script src="/js/jquery.rating.js"></script>
-    <script src="/js/jquery.rating..pack.js"></script>
 
 </head>
 

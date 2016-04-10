@@ -1,8 +1,10 @@
 <?php
 
-namespace Vendor;
+namespace Vendor\Response;
 
-class Response
+use Vendor\Response\ResponseInterface;
+
+class Response implements ResponseInterface
 {
     protected static $messages = [
         // Information 1xx

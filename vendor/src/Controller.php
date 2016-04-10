@@ -3,7 +3,7 @@
 namespace Vendor;
 
 use Vendor\View;
-use Vendor\Response;
+use Vendor\Response\Response;
 use Vendor\Application;
 
 class Controller

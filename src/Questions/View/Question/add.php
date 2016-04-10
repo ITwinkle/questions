@@ -3,7 +3,7 @@
         <h3 class="post-subtitle"><p>Question in category <b><?php echo $cat?></b></p></h3>
         <b>Enter your question</b>
         <textarea rows="10" cols="44" name="question" id="question" required minlength="50" "></textarea>
-        <input type="submit" value="Ask and sent to email" id="submit">
+        <input type="submit" class="btn-success" value="Ask and sent to email" id="submit">
     </form>
 </div>
 <script>

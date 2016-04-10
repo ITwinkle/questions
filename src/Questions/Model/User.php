@@ -25,4 +25,18 @@ class User extends Model
         $query = 'select id from user where email=\''.$email.'\'';
         return self::select($query);
     }
+
+    public static function updateRating($id){
+        $query = 'select col_answers from expert where id=\''.$id.'\'';
+        $col = self::select($query)['col_answers'];
+        $col +=1;
+        $query = 'update expert set col_answers =\''.$col.'\' where id=\''.$id.'\'';
+        self::insert($query);
+    }
+
+    public static function search($string){
+        $query = 'select e.id, e.name, c.name as cat from expert e join category_for_expert cfe on (e.id = cfe.exp_id) join category c
+                  on (c.id = cfe.cat_id) where e.name like \'%'.$string.'%\'';
+        return static::selectAll($query);
+    }
 }

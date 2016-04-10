@@ -1,5 +1,6 @@
 <div class="container">
     <div class="row">
+        <div class="text-right"></div>
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <div class="post-preview">
                     <?php foreach($questions as $question):?>
@@ -11,8 +12,8 @@
                             There is still no answer to the question
                         <?php }?>
                         <p class="post-meta">Asked on <?php echo $question['date']?></p>
-                    </a>
                         <hr>
+                    </a>
                     <?php endforeach;?>
             </div>
             <hr>

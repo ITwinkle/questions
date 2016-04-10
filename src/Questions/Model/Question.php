@@ -39,15 +39,9 @@ class Question extends Model{
     public static function insertAnswer($data){
         $query = 'update question set answer = (\''.$data['answer'].'\') where id=\''.$data['id'].'\'';
         self::insert($query);
-        self::updateRating($data['expert_id']);
+        User::updateRating($data['expert_id']);
     }
 
-    private static function updateRating($id){
-        $query = 'select col_answers from expert where id=\''.$id.'\'';
-        $col = self::select($query)['col_answer'];
-        $col +=1;
-        $query = 'update expert set col_answers =\''.$col.'\' where id=\''.$id.'\'';
-        self::insert($query);
-    }
+
 
 }
