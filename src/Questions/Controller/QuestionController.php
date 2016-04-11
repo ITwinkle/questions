@@ -19,7 +19,8 @@ class QuestionController extends SecurityController
         if ($this->checkLogged()) {
             $id = User::getUser($_SESSION['email'])['id'];
             $questions = Question::getQuestions($id);
-            return $this->render('questions.php', ['questions' => $questions]);
+            $top = User::top();
+            return $this->render('questions.php', ['questions' => $questions,'top'=>$top]);
         } else {
             $this->redirect('login');
         }

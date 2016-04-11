@@ -39,4 +39,9 @@ class User extends Model
                   on (c.id = cfe.cat_id) where e.name like \'%'.$string.'%\'';
         return static::selectAll($query);
     }
+
+    public static function top(){
+        $query = 'select name, rating/col_answers rat, photo from expert order by rat desc limit 5';
+        return self::selectAll($query);
+    }
 }

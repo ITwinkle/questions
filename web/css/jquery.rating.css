@@ -1,11 +1,39 @@
-/* jQuery.Rating Plugin CSS - http://www.fyneworks.com/jquery/star-rating/ */
-div.rating-cancel,div.star-rating{float: left;width:17px;height:15px;text-indent:-999em;cursor:pointer;display:block;background:transparent;overflow:hidden}
-div.star-rating,div.star-rating a{background:url(../img/star.gif) no-repeat 0 0px}
-div.rating-cancel a,div.star-rating a{display:block;width:16px;height:100%;background-position:0 0px;border:0}
-div.star-rating-on a{background-position:0 -16px!important}
-div.star-rating-hover a{background-position:0 -32px}
-/* Read Only CSS */
-div.star-rating-readonly a{cursor:default !important}
-/* Partial Star CSS */
-div.star-rating{background:transparent!important;overflow:hidden!important}
-/* END jQuery.Rating Plugin CSS */
+div.vote-wrap{
+    overflow: hidden;
+}
+
+div.vote-block{
+	position: relative;	
+}
+
+div.vote-hover{
+    float: left;
+    cursor:  pointer;
+}
+
+
+div.vote-stars{
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+div.vote-active{
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+div.vote-result{
+    color: #ccc;
+    font-size: 14px;
+    margin-top: 12px;
+    padding-left: 190px;
+}
+
+div.vote-success{
+    clear: both;
+    color: #ccc;
+    font-size: 14px;
+    margin: 10px 0 0 10px;
+}
