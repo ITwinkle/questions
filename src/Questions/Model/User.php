@@ -26,11 +26,13 @@ class User extends Model
         return self::select($query);
     }
 
-    public static function updateRating($id){
-        $query = 'select col_answers from expert where id=\''.$id.'\'';
-        $col = self::select($query)['col_answers'];
-        $col +=1;
-        $query = 'update expert set col_answers =\''.$col.'\' where id=\''.$id.'\'';
+    public static function updateColAnswers($id){
+        $query = 'update expert set col_answers = col_answers + 1 where id=\''.$id.'\'';
+        self::insert($query);
+    }
+
+    public static function updateRating($data){
+        $query = 'update expert set rating = rating + \''.$data['rat'].'\' where id = \''.$data['id'].'\'';
         self::insert($query);
     }
 

@@ -8,10 +8,10 @@
                         <div style="overflow: hide;"><h2 class="post-title"><?php echo $question['question_text']?></h2></div>
                     </a>
                     <h4><?php if(!empty($question['answer'])) {echo $question['answer'];?></h4>
+                        <input id="<?php echo $question['expert_id']?>" type="hidden" class="rating"/>
                     <?php } else {?>
                         There is still no answer to the question
                     <?php }?>
-
                     <p class="post-meta">Asked on <?php echo $question['date']?></p>
                     <hr>
                 <?php endforeach;?>
@@ -33,3 +33,18 @@
     </div>
 </div>
 
+<script>
+    $(document).ready(function(){
+        $('input').on('change', function () {
+            $(this).attr('disabled','disabled');
+            var rating = $(this).val();
+            var exp_id = $(this).attr('id');
+            var url = '/score';
+
+            $.post(url,{id: exp_id, rat: rating }).done(function(){
+
+            });
+        });
+    });
+
+</script>

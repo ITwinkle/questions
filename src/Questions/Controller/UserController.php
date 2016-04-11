@@ -26,6 +26,19 @@ class UserController extends SecurityController
 
     public function searchAction($string){
         $expert = User::search($string);
-        return json_encode($expert);
+        if(!empty($expert)){
+            return json_encode($expert);
+        } else {
+            return [];
+        }
+    }
+
+    public function addScoreAction(){
+        if($this->getRequest()->isGet()){
+            $this->redirect();
+        } else {
+           $data = $this->getRequest()->post();
+           User::updateRating($data);
+        }
     }
 }

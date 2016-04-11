@@ -13,11 +13,12 @@
         <h1>No experts in this category</h1>
     <?php } ?>
     </div>
-    <div class="col-lg-2 fixed" >
+    <div class="col-lg-3 fixed" >
         <div class="text-right" style="margin-right: 20px">Search in all categories <input type="search" id="search"></div>
-        <div  id="value" class="text-right pull-right table-bordered" style="margin-right: 20px"></div>
+        <div  id="value" class="text-right pull-right table-bordered"  style="margin-right: 20px; width: 243px"></div>
     </div>
-    </div>
+</div>
+
 <script>
     $(document).ready(function(){
         $('#search').on('input',function(e){
@@ -27,8 +28,8 @@
                 var id = [];
                 var name = [];
                 $.each( data, function( key, value ) {
-                    $('#value').css('border','solid 2px black');
-                    $('#value').append('<a href="/'+value.cat+'/experts/'+value.id+'">'+value.name+'</a><br>');
+                        $('#value').css('border','solid 2px black');
+                        $('#value').append('<a href="/'+value.cat+'/experts/'+value.id+'"><ul>'+value.name+'</ul></a><br>');
                 });
             });
         });

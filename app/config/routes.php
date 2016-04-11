@@ -69,5 +69,10 @@ return [
             'cat' => '\w+',
             'id' => '\d+'
         ]
+    ],
+    'score' => [
+        'pattern' => '/score',
+        'controller' => 'Questions\\Controller\\UserController',
+        'action' => 'addScore'
     ]
 ];

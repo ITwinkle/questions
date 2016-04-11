@@ -39,7 +39,7 @@ class Question extends Model{
     public static function insertAnswer($data){
         $query = 'update question set answer = (\''.$data['answer'].'\') where id=\''.$data['id'].'\'';
         self::insert($query);
-        User::updateRating($data['expert_id']);
+        User::updateColAnswers($data['expert_id']);
     }
 
 
