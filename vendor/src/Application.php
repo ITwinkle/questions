@@ -14,6 +14,7 @@ class Application
     {
         static::$config = include $config;
         session_start();
+        Container::set('auth', new \Vendor\Auth\GoogleAuth());
         Container::set('router',new \Vendor\Router());
         Container::set('request',new \Vendor\Request());
         Container::set('view', new \Vendor\View());
@@ -22,7 +23,6 @@ class Application
             Container::set('pdo', new \PDO(static::$config['pdo']['connect'],
                 static::$config['pdo']['username'],
                 static::$config['pdo']['password']));
-            Model::setPDO();
         } catch (PDOException $e) {
             print "Error!: " . $e->getMessage() . "<br/>";
             die();

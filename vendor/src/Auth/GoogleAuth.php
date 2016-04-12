@@ -1,8 +1,9 @@
 <?php
 
-namespace Vendor\Services;
+namespace Vendor\Auth;
 
 use Vendor\Application;
+use Vendor\Auth\Model\User;
 use Vendor\Model;
 
 class GoogleAuth
@@ -20,7 +21,7 @@ class GoogleAuth
         }
     }
 
-    public function isLoggedIn(){
+    public function checkToken(){
         return isset($_SESSION['access_token']);
     }
 
@@ -39,7 +40,7 @@ class GoogleAuth
     }
 
     public function setToken($token){
-        $_SESSION['access_token'] = $token;
+        $_SESSION['access_token'] = json_decode($token,true)['access_token'];
         $this->client->setAccessToken($token);
     }
 
@@ -49,9 +50,22 @@ class GoogleAuth
 
     protected function storeUser($payload){
         $select_query = "select email from user where email = '{$payload['email']}'";
-            if(!Model::select($select_query)){
+        if(!User::select($select_query)){
             $query = "insert into user(email) values ('{$payload['email']}') on duplicate key UPDATE id=id";
-            Model::insert($query);
+            User::insert($query);
+        }
+        $token = json_decode($this->client->getAccessToken(),true)['access_token'];
+        $query = "update user set access_token = '{$token}' where email = '{$payload['email']}'";
+        User::insert($query);
+        return false;
+    }
+
+    public function checkLogged()
+    {
+        if(isset($_SESSION['access_token'])){
+            $query = "select access_token from user where email = '{$_SESSION['email']}'";
+            $access_token = Model::select($query)['access_token'];
+            return $access_token == $_SESSION['access_token'];
         }
         return false;
     }

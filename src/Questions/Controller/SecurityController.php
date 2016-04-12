@@ -4,7 +4,8 @@ namespace Questions\Controller;
 
 use Questions\Model\User;
 use Vendor\Controller;
-use Vendor\Services\GoogleAuth;
+use Vendor\Auth\GoogleAuth;
+use Vendor\Model;
 
 class SecurityController extends Controller
 {
@@ -16,26 +17,20 @@ class SecurityController extends Controller
         $this->auth =  new GoogleAuth($googleClient);
     }
 
-    public function loginAction(){
-
+    public function loginAction()
+    {
         if($this->auth->checkRedirectCode()){
             $_SESSION['email'] = $this->auth->getPayload()['email'];
-            $this->redirect('questions');
+            $this->redirect();
         } else {
             return $this->render('login.php', ['auth' => $this->auth]);
         }
     }
 
-    public function logoutAction(){
-        unset($_SESSION['access_token']);
+    public function logoutAction()
+    {
+        unset($_SESSION['access_token'],$_SESSION['email']);
         $this->redirect();
-    }
-
-    public function checkLogged(){
-        if(isset($_SESSION['access_token'])){
-            return true;
-        }
-        return false;
     }
 
 }

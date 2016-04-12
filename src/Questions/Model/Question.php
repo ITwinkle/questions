@@ -6,11 +6,6 @@ use Vendor\Model;
 
 class Question extends Model{
 
-    public static function getCategories(){
-        $query = 'select * from category';
-        return self::selectAll($query);
-    }
-
     public static function getQuestions($id){
         $query = 'select q.*,c.name from question q join category c on(q.category_id=c.id) where q.author_id = \''.$id.'\' order by q.date desc';
         return static::selectAll($query);

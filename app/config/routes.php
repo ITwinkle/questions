@@ -2,7 +2,7 @@
 return [
     'index' => [
         'pattern' => '/',
-        'controller' => 'Questions\\Controller\\QuestionController',
+        'controller' => 'Questions\\Controller\\MainController',
         'action' => 'index'
     ],
     'questions' => [
