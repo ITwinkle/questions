@@ -2,6 +2,7 @@
 
 namespace Questions\Helpers;
 
+use Vendor\Container;
 
 class Email
 {

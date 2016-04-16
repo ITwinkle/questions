@@ -6,34 +6,32 @@ use Vendor\Container;
 
 class Model
 {
-    protected $pdo;
+    protected static $pdo;
 
-    public function __construct(){
-        $this->pdo = Container::get('pdo');
-        $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+    public static function setPDO($pdo){
+        static::$pdo = $pdo;
+        static::$pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
 
-    public function getList(array $columns = [], array $parameters = []){
-        if(!empty($columns)){
-
-            $query = 'select '.implode(',', $columns).' from '.$this->table;
-
-            $query = $this->buildJoin($query, $parameters);
-            $query = $this->buildWhere($query, $parameters);
-            $query = $this->buildOther($query, $parameters);
-
-            return $this->pdo->query($query);
+    public function getList(array $columns = [], array $parameters = [], $type = \PDO::FETCH_ASSOC){
+        if(!empty($columns)) {
+            $query = 'select ' . implode(',', $columns) . ' from ' . $this->table;
+        } else {
+            $query = 'select * from '.$this->table;
         }
-
-        $query = 'select * from '.$this->table;
-        return $this->pdo->query($query);
+        $query = $this->buildJoin($query, $parameters);
+        $query = $this->buildWhere($query, $parameters);
+        $query = $this->buildOther($query, $parameters);
+        return static::$pdo->query($query)->fetchAll($type);
     }
 
     protected function buildJoin($query, array $parameters = []){
         if(array_key_exists('join', $parameters)){
-            $query .= ' join '.$parameters['join']['table'].
-                ' ON('.$this->table.'.'.$parameters['join']['fcolumn'].'='.
-                $parameters['join']['table'].'.'.$parameters['join']['scolumn'].')';
+            for($i = 0; $i < count($parameters['join']['table']);$i++){
+                $query .= ' join '.$parameters['join']['table'][$i] .
+                    ' ON('.$parameters['join']['fcolumn'][$i].'='.
+                    $parameters['join']['scolumn'][$i].')';
+            }
         }
 
         return $query;
@@ -48,29 +46,31 @@ class Model
     }
 
     protected function buildOther($query, array $parameters = []){
-        if(array_key_exists('limit')){
+        if(array_key_exists('limit',$parameters)){
             $query .= ' limit '.$parameters['limit'];
+        }
+
+        if(array_key_exists('order',$parameters)){
+            if(array_key_exists('type',$parameters['order'])){
+                $query .= ' order by '.$parameters['order']['column'].' '.$parameters['order']['type'];
+            } else {
+                $query .= ' order by '.$parameters['column'];
+            }
         }
 
         return $query;
     }
 
-    public function post(array $fields, array $parameters = []){
-        $query = 'insert into' . $this->table.'('.explode(',',$fields['column']) .
-            ' values(' .explode(',',$fields['value']).')';
-
-        $query = $this->buildWhere($query,$parameters);
-
-        return $this->pdo->query($query);
+    public function post(array $fields){
+        $query = 'insert into ' . $this->table.'('.implode(',',array_keys($fields)) .
+            ') values(\'' .implode('\',\'',$fields).'\')';
+        static::$pdo->query($query);
     }
 
-    public function update(array $fields, array $parameters = []){
-        $query = 'update '.$this->table.' set ' . $fields['column']. '='. $fields['value'];
+    public function update(array $field, array $parameters = []){
+        $query = 'update '.$this->table.' set ' . $field[0]. '= \''. $field[1].'\'';
 
         $query = $this->buildWhere($query,$parameters);
-
-        return $this->pdo->query($query);
+        static::$pdo->query($query);
     }
-
-
 }

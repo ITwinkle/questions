@@ -2,59 +2,87 @@
 
 namespace Questions\Controller;
 
-use Questions\Helpers\Email;
-use Random;
+use Questions\Model\Category;
 use Vendor\Container;
+use Questions\Helpers\Email;
+use Questions\Helpers\Random;
+use Questions\Model\Answer;
+use Questions\Model\Expert;
 use Questions\Model\Question;
 use Questions\Model\User;
 
 class QuestionController extends BaseController
 {
-    public function questionsAction()
+    private $model;
+
+    public function __construct()
     {
-            $id = User::getUser($_SESSION['email'])['id'];
-            $questions = Question::getQuestions($id);
-            $top = User::top();
-            return $this->render('questions.php', ['questions' => $questions,'top'=>$top]);
+        $this->model = new Question();
     }
 
-    public function questionAction($id)
+    public function getQuestionsAction()
     {
-        $question = Question::getQuestion($id);
-        return $this->render('show_question.php',['question'=>$question]);
+        $this->checkLogged();
+        $id = (new User())->getList(['id'],['email' => $_SESSION['email']])[0]['id'];
+        $questions = $this->model->getList(['question.*, name,answer_text'],
+            ['category_id'=>$id,'answer'=>$id,'order'=>['column'=>'question.date',
+            'type'=>'desc']]);
+        $top = (new Expert())->getTop(5);
+        $_SESSION['uri'] = $_SERVER['REQUEST_URI'];
+        return $this->render('questions.php', ['questions' => $questions, 'top' => $top]);
     }
 
-    public function questionAnswerAction($hash)
+    public function getQuestionAction($id)
     {
-        if ($this->getRequest()->isGet()) {
-            $id = User::getUser($_SESSION['email'])['id'];
-            $question = Question::getQuestionAnswer($hash, $id);
-            return $this->render('answer.php', ['question' => $question, 'hash' => $hash]);
-        } else {
-            $data = $this->getRequest()->post();
-            Question::insertAnswer($data);
-            Email::sendEmail($data['answer'], 'questions/' . $data['id'], $data['email'], 'answer');
-            return $this->render('answer.php');
-        }
+        $this->checkLogged();
+        $question = $this->model->getList(['question.*,name,answer_text'],
+            ['current'=>$id]);
+        return $this->render('show_question.php', ['question' => $question[0]]);
     }
 
-    public function askAction($cat, $id)
+    public function getQuestionAnswerAction($hash)
     {
-        if ($this->getRequest()->isGet()) {
-            return $this->render('add.php', ['cat' => $cat, 'expert_id' => $id], false);
-        } else {
-            $data = $this->getRequest()->post();
-            $data['date'] = (new \DateTime())->format('Y-m-d H:i:s');
-            $data['cat'] = $cat;
-            $data['expert_id'] = $id;
-            $data['hash'] = Random::random_string(10, 'lower,numbers');
-            $data['id'] = User::getUser($_SESSION['email'])['id'];
-            Question::insertQuestion($data);
-            Email::sendEmail($data['question'], 'answer/' . $data['hash'], $id, 'question',$_SESSION['email']);
-            return $this->render('add.php', ['data' => $data, 'id' => $id]);
-        }
+        $_SESSION['uri'] = $_SERVER['REQUEST_URI'];
+        $question = $this->model->getList(['question.question_text','question.id',
+        'question.expert_id','category.name','user.email'],['category'=>'','user'=>'', 'hash'=>$hash])[0];
+        return $this->render('answer.php', ['question' => $question, 'hash' => $hash]);
     }
 
+    public function postQuestionAnswerAction()
+    {
+        $data = $this->getRequest()->post();
+        (new Answer())->post(['answer_text'=>$data['answer'],'question_id'=>$data['id'],'expert_id'=>$data['expert_id']]);
+        Email::sendEmail($data['answer'], 'questions/' . $data['id'], $data['email'], 'answer');
+        return $this->render('answer.php');
+    }
+
+    public function getAskAction($cat, $id)
+    {
+        return $this->render('add.php', ['cat' => $cat, 'expert_id' => $id], false);
+
+    }
+
+    public function postAskAction($cat, $id)
+    {
+        $data = $this->getRequest()->post();
+        $data['date'] = (new \DateTime())->format('Y-m-d H:i:s');
+        $data['cat'] = $cat;
+        $data['expert_id'] = $id;
+        $data['hash'] = Random::random_string(10, 'lower,numbers');
+        $data['id'] = (new User())->getList(['id'],['email' => $_SESSION['email']])[0]['id'];
+        $data['cat_id'] = (new Category())->getList(['id'],['name'=>$data['cat']])[0]['id'];
+        $this->model->post([
+            'author_id'=>$data['id'],
+            'hash'=>$data['hash'],
+            'question_text'=>$data['question'],
+            'expert_id'=>$data['expert_id'],
+            'date'=>$data['date'],
+            'category_id'=>$data['cat_id']
+        ]);
+
+        Email::sendEmail($data['question'], 'answer/' . $data['hash'], $id, 'question', $_SESSION['email']);
+        return $this->render('add.php', ['data' => $data, 'id' => $id]);
+    }
 
 
 }

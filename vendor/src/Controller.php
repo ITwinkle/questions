@@ -27,7 +27,7 @@ class Controller
     }
 
     public function redirect($uri = ''){
-        header('location: '.'/'.trim($uri));
+        header('location: '.'/'.trim($uri,'/'));
     }
 
 }

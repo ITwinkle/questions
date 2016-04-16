@@ -14,19 +14,20 @@ class Application
     {
         static::$config = include $config;
         session_start();
+        try{
+            Container::set('pdo', new \PDO(static::$config['pdo']['connect'],
+                static::$config['pdo']['username'],
+                static::$config['pdo']['password']));
+            Model::setPDO(Container::get('pdo'));
+        } catch (PDOException $e) {
+            print "Error!: " . $e->getMessage() . "<br/>";
+            die();
+        }
         Container::set('auth', new \Vendor\Auth\GoogleAuth());
         Container::set('router',new \Vendor\Router());
         Container::set('request',new \Vendor\Request());
         Container::set('view', new \Vendor\View());
         Container::set('email', new \Vendor\Services\Email());
-        try{
-            Container::set('pdo', new \PDO(static::$config['pdo']['connect'],
-                static::$config['pdo']['username'],
-                static::$config['pdo']['password']));
-        } catch (PDOException $e) {
-            print "Error!: " . $e->getMessage() . "<br/>";
-            die();
-        }
         Container::get('router')->set(static::$config['routes']);
     }
 
@@ -38,7 +39,7 @@ class Application
             if (class_exists($controllerClass)) {
                 $refl = new \ReflectionClass($controllerClass);
             } else {
-                echo 'No such controller';
+                (new Response(Container::get('view')->render(static::$config['error404'])))->send();
             }
             if ($refl->hasMethod($actionClass)) {
                 $controller     = $refl->newInstance();
@@ -52,10 +53,10 @@ class Application
                 }
 
             } else {
-                echo 'No such method';
+                (new Response(Container::get('view')->render(static::$config['error404'])))->send();
             }
         } catch (Exception $e){
-          echo "ERROR";
+            (new Response(Container::get('view')->render(static::$config['error404'])))->send();
         }
     }
 

@@ -7,7 +7,7 @@
                             <p><h2>Author</h2><?php echo $question['email']?></p>
                             <p><h1>Category</h1> <?php echo $question['name']?></p>
                             <h1>Question</h1> <?php echo $question['question_text']?>
-                            <form action="/answer/<?php echo $hash;?>" method="post">
+                            <form action="/answer" method="post">
                                 <p><h1>Answer</h1> <textarea name="answer" required></textarea></p>
                                 <input type="hidden" name="id" value="<?php echo $question['id']?>">
                                 <input type="hidden" name="email" value="<?php echo $question['email']?>">

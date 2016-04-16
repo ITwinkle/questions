@@ -16,10 +16,12 @@ class Router
 
     public function getRoute()
     {
-
         $uri = explode('?', trim(Container::get('request')->getUri(), '/'));
         $uri = '/' . reset($uri);
         foreach ($this->routes as $name => $route) {
+            if(Container::get('request')->getMethod()!=$route['method']){
+                continue;
+            }
             $pattern = str_replace(array('{', '}'), array('(?P<', '>)'), $route['pattern']);
             if (array_key_exists('requirements', $route)) {
                 if (0 !== count($route['requirements'])) {

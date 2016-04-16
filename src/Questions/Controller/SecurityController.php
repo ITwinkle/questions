@@ -21,7 +21,7 @@ class SecurityController extends Controller
     {
         if($this->auth->checkRedirectCode()){
             $_SESSION['email'] = $this->auth->getPayload()['email'];
-            $this->redirect();
+            $this->redirect($_SESSION['uri']);
         } else {
             return $this->render('login.php', ['auth' => $this->auth]);
         }

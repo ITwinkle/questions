@@ -3,76 +3,103 @@ return [
     'index' => [
         'pattern' => '/',
         'controller' => 'Questions\\Controller\\MainController',
-        'action' => 'index'
+        'action' => 'index',
+        'method' => 'GET'
     ],
-    'questions' => [
+    'getQuestions' => [
         'pattern' => '/questions',
         'controller' => 'Questions\\Controller\\QuestionController',
-        'action' => 'questions',
+        'action' => 'getQuestions',
+        'method' => 'GET'
     ],
-    'search' => [
-        'pattern' => '/search/{string}',
-        'controller' => 'Questions\\Controller\\UserController',
-        'action' => 'search',
-        'requirements' => [
-            'string' => '\w+'
-        ]
-    ],
-    'question' => [
+    'getQuestion' => [
         'pattern' => '/questions/{id}',
         'controller' => 'Questions\\Controller\\QuestionController',
-        'action' => 'question',
+        'action' => 'getQuestion',
         'requirements' => [
             'id' => '\d+'
-        ]
+        ],
+        'method' => 'GET'
     ],
-    'answer' => [
+    'getAnswer' => [
         'pattern' => '/answer/{hash}',
         'controller' => 'Questions\\Controller\\QuestionController',
-        'action' => 'questionAnswer',
+        'action' => 'getQuestionAnswer',
         'requirements' => [
             'hash' => '[\w\d]+'
-        ]
+        ],
+        'method' => 'GET'
     ],
-    'ask' => [
+    'postAnswer' => [
+        'pattern' => '/answer',
+        'controller' => 'Questions\\Controller\\QuestionController',
+        'action' => 'postQuestionAnswer',
+        'method' => 'POST'
+    ],
+    'getAsk' => [
         'pattern' => '/{cat}/experts/{exp_id}/ask',
         'controller' => 'Questions\\Controller\\QuestionController',
-        'action' => 'ask',
+        'action' => 'getAsk',
         'requirements' => [
             'cat' => '\w+',
             'exp_id' => '\d+'
-        ]
+        ],
+        'method' => 'GET'
+    ],
+    'postAsk' => [
+        'pattern' => '/{cat}/experts/{exp_id}/ask',
+        'controller' => 'Questions\\Controller\\QuestionController',
+        'action' => 'postAsk',
+        'requirements' => [
+            'cat' => '\w+',
+            'exp_id' => '\d+'
+        ],
+        'method' => 'POST'
     ],
     'login' => [
         'pattern' => '/login',
         'controller' => 'Questions\\Controller\\SecurityController',
-        'action' => 'login'
+        'action' => 'login',
+        'method' => 'GET'
     ],
     'logout' => [
         'pattern' => '/logout',
         'controller' => 'Questions\\Controller\\SecurityController',
-        'action' => 'logout'
+        'action' => 'logout',
+        'method' => 'GET'
     ],
-    'experts' => [
+    'getExperts' => [
         'pattern' => '/{cat}/experts',
-        'controller' => 'Questions\\Controller\\UserController',
-        'action' => 'showAllExperts',
+        'controller' => 'Questions\\Controller\\ExpertController',
+        'action' => 'getExperts',
         'requirements' => [
             'cat' => '\w+'
-        ]
+        ],
+        'method' => 'GET'
     ],
-    'expert' => [
+    'getExpert' => [
         'pattern' => '/{cat}/experts/{id}',
-        'controller' => 'Questions\\Controller\\UserController',
-        'action' => 'showExpert',
+        'controller' => 'Questions\\Controller\\ExpertController',
+        'action' => 'getExpert',
         'requirements' => [
             'cat' => '\w+',
             'id' => '\d+'
-        ]
+        ],
+        'method' => 'GET'
     ],
-    'score' => [
+    'search' => [
+        'pattern' => '/search/{string}',
+        'controller' => 'Questions\\Controller\\ExpertController',
+        'action' => 'search',
+        'requirements' => [
+            'string' => '\w+'
+        ],
+        'method' => 'POST'
+    ],
+    'postScore' => [
         'pattern' => '/score',
-        'controller' => 'Questions\\Controller\\UserController',
-        'action' => 'addScore'
+        'controller' => 'Questions\\Controller\\ExpertController',
+        'action' => 'postScore',
+        'method' => 'POST'
     ]
 ];

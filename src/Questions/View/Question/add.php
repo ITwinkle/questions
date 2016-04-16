@@ -17,7 +17,7 @@
                $('#form').text(text);
                window.setTimeout(function(){
                   parent.jQuery.colorbox.close();
-               },4000);
+               },3000);
            });
        });
 </script>

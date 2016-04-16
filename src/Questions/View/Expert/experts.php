@@ -2,11 +2,14 @@
     <div class="col-lg-9 scrollit"><h1>Experts in <?php echo $cat?></h1>
     <?php if($experts){
         foreach($experts as $expert):?>
-            <h3 class="post-title">
-                <a href="experts/<?php echo $expert['id']?>"><?php echo $expert['name']?></a>
-            </h3>
-                <img src="<?php echo $expert['photo']?>" height="300" width="250">
-                <h5>Rating: <?php echo $expert['rating']/$expert['col_answers']?></h5>
+            <div class="post-title">
+               <?php echo $expert['name']?>
+            </div>
+            <img src="<?php echo $expert['photo']?>" height="300" width="250">
+            <div><?php echo $expert['desc']?></div>
+            <div>Answers: <?php echo $count[$expert['id']]?></div>
+            <div>Rating: <?php echo $rating[$expert['id']]?></div>
+            <button id="click" expert="<?php echo $expert['id']?>" class="btn-success" type="button">Ask me anything</button>
             <hr>
         <?php endforeach;
     } else {?>
@@ -18,6 +21,15 @@
         <div  id="value" class="text-right pull-right table-bordered"  style="margin-right: 20px; width: 243px"></div>
     </div>
 </div>
+
+<script>
+    jQuery( document ).ready(function(){
+        jQuery(".btn-success").click(function(){
+            var expert = jQuery(this).attr('expert');
+            jQuery.colorbox({href:"/<?php echo $cat?>/experts/"+expert+"/ask", title: "Ask me!", innerWidth: 500, innerHeight: 500, scrolling: true, opacity: '0.8',maxWidth: '95%'});
+        });
+    });
+</script>
 
 <script>
     $(document).ready(function(){

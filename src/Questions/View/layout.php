@@ -53,7 +53,7 @@
                     <a href="<?php echo $route('index')?>">Home</a>
                 </li>
                 <li>
-                    <a href="<?php echo $route('questions')?>">My questions</a>
+                    <a href="<?php echo $route('getQuestions')?>">My questions</a>
                 </li>
             </ul>
         </div>

@@ -10,8 +10,11 @@ class GoogleAuth
 {
     protected $client;
 
+    private $model;
+
     public function __construct(\Google_Client $googleClient = null)
     {
+        $this->model = new User();
         $this->client = $googleClient;
         if($this->client){
             $this->client->setClientId(Application::$config['client_id']);
@@ -49,23 +52,24 @@ class GoogleAuth
     }
 
     protected function storeUser($payload){
-        $select_query = "select email from user where email = '{$payload['email']}'";
-        if(!User::select($select_query)){
-            $query = "insert into user(email) values ('{$payload['email']}') on duplicate key UPDATE id=id";
-            User::insert($query);
+
+        $user = $this->model->getList(['email'],['email' => $payload['email']])[0]['email'];
+        if(!$user){
+            $this->model->post(['email'=>$payload['email']]);
         }
         $token = json_decode($this->client->getAccessToken(),true)['access_token'];
-        $query = "update user set access_token = '{$token}' where email = '{$payload['email']}'";
-        User::insert($query);
-        return false;
+        $this->model->update(['access_token',$token],
+            ['email' => $payload['email']]);
     }
 
     public function checkLogged()
     {
         if(isset($_SESSION['access_token'])){
-            $query = "select access_token from user where email = '{$_SESSION['email']}'";
-            $access_token = Model::select($query)['access_token'];
-            return $access_token == $_SESSION['access_token'];
+            $model = new User();
+            $access_token = $model->getList(['access_token'],['email' => $_SESSION['email']])[0]['access_token'];
+            if($access_token === $_SESSION['access_token']){
+                return true;
+            }
         }
         return false;
     }
