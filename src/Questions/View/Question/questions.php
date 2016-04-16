@@ -10,7 +10,7 @@
                     </a>
                     <h5>Answer: </h5>
                     <?php if(!empty($question['answer_text'])) {echo $question['answer_text'];?>
-                        <div><input id="<?php echo $question['expert_id']?>" type="hidden" class="rating"/></div>
+                        <div><input value="<?php echo $question['rating']?>" id="<?php echo $question['answer_id']?>" type="hidden" class="rating"/></div>
                     <?php } else {?>
                         There is still no answer to the question
                     <?php }?>
@@ -40,10 +40,10 @@
         $('input').on('change', function () {
             $(this).attr('disabled','disabled');
             var rating = $(this).val();
-            var exp_id = $(this).attr('id');
+            var answer_id = $(this).attr('id');
             var url = '/score';
 
-            $.post(url,{id: exp_id, rat: rating }).done(function(){
+            $.post(url,{id: answer_id, rat: rating }).done(function(){
 
             });
         });

@@ -37,6 +37,6 @@ class ExpertController extends SecurityController
 
     public function postScoreAction(){
         $data = $this->getRequest()->post();
-        (new Answer())->update(['rating',$data['rat']],['expert'=>$data['id']]);
+        (new Answer())->update(['rating',$data['rat']],['answer'=>$data['id']]);
     }
 }

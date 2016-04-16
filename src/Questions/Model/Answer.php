@@ -19,6 +19,7 @@ class Answer extends Model
         foreach($rating_with_id as $rat){
             $rating[$rat['expert_id']] = $rat['rating'];
         }
+
         return $rating;
     }
 
@@ -34,10 +35,9 @@ class Answer extends Model
 
     public function buildWhere($query, array $parameters = [])
     {
-        if(array_key_exists('expert',$parameters)){
-            $query .= ' where expert_id = \''.$parameters['expert'].'\'';
+        if(array_key_exists('answer',$parameters)){
+            $query .= ' where id = \''.$parameters['answer'].'\'';
         }
-
         return $query;
     }
 

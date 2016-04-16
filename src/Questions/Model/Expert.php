@@ -53,15 +53,8 @@ class Expert extends Model
         if(array_key_exists('group',$parameters)){
             $query .= ' group by '.$parameters['group'];
         }
-
-
         return parent::buildOther($query, $parameters);;
     }
-
-//        $query = 'update expert set rating = rating + \''.$data['rat'].'\' where id = \''.$data['id'].'\'';
-//        self::insert($query);
-//    }
-//
 //    public static function search($string){
 //        $query = 'select e.id, e.name, c.name as cat from expert e join category_for_expert cfe on (e.id = cfe.exp_id) join category c
 //                  on (c.id = cfe.cat_id) where e.name like \'%'.$string.'%\'';

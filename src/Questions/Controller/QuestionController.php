@@ -24,7 +24,7 @@ class QuestionController extends BaseController
     {
         $this->checkLogged();
         $id = (new User())->getList(['id'],['email' => $_SESSION['email']])[0]['id'];
-        $questions = $this->model->getList(['question.*, name,answer_text'],
+        $questions = $this->model->getList(['question.*, name, answer_text, rating, answer.id answer_id'],
             ['category_id'=>$id,'answer'=>$id,'order'=>['column'=>'question.date',
             'type'=>'desc']]);
         $top = (new Expert())->getTop(5);
