@@ -29,16 +29,12 @@ class ExpertController extends SecurityController
     public function searchAction($string)
     {
         $cat = $this->getRequest()->post()['cat'];
-        $experts = $this->model->getList(['expert.*,category.name cat'],
-            ['category'=>null,'category_for_expert'=>null,'name'=>$string,'cat'=>$cat]);
-//        $answer_model = new Answer();
-//        $rating = $answer_model->getRating();
-//        $count_answers = $answer_model->getCountAnswers();
-        //$data = ['expert'=>$experts,'rating'=>$rating,'answers'=>$count_answers];
+        $experts = $this->model->getSearchResult($string,$cat);
+
         if(!empty($experts)){
             return new JsonResponse($experts);
         } else {
-            return [];
+            return new JsonResponse([]);
         }
     }
 

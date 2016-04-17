@@ -14,7 +14,7 @@ class Expert extends Model
         }
 
         if(array_key_exists('name',$parameters)){
-            $query .= ' where expert.name like \'%'.$parameters['name'].'%\'';
+            $query .= ' where expert.name like \''.$parameters['name'].'%\'';
         }
 
         if(array_key_exists('cat',$parameters)){
@@ -65,6 +65,19 @@ class Expert extends Model
             $query .= ' group by '.$parameters['group'];
         }
         return parent::buildOther($query, $parameters);;
+    }
+
+    public function getSearchResult($string,$cat){
+        $experts = $this->getList(['expert.*,category.name cat'],
+            ['category'=>null,'category_for_expert'=>null,'name'=>$string,'cat'=>$cat]);
+        $answer_model = new Answer();
+        $rating = $answer_model->getRating();
+        $count_answers = $answer_model->getCountAnswers();
+        for($i=0;$i<count($experts);$i++){
+            $experts[$i]['rating'] = $rating[$i+1];
+            $experts[$i]['col_answers'] = $count_answers[$i+1];
+        }
+        return $experts;
     }
 
 
