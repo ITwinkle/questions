@@ -5,7 +5,7 @@ namespace Vendor\Services;
 
 use Vendor\Application;
 
-class Email
+class SwiftMailer
 {
     public static function send($text,$subject,$to){
         $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, 'ssl')
