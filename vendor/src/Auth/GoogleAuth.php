@@ -4,6 +4,7 @@ namespace Vendor\Auth;
 
 use Vendor\Application;
 use Vendor\Auth\Model\User;
+use Vendor\Container;
 use Vendor\Model;
 
 class GoogleAuth
@@ -25,7 +26,7 @@ class GoogleAuth
     }
 
     public function checkToken(){
-        return isset($_SESSION['access_token']);
+        return Container::get('session')->isExist('access_token');
     }
 
     public function getAuthUrl(){
@@ -43,7 +44,7 @@ class GoogleAuth
     }
 
     public function setToken($token){
-        $_SESSION['access_token'] = json_decode($token,true)['access_token'];
+        Container::get('session')->set('access_token',json_decode($token,true)['access_token']);
         $this->client->setAccessToken($token);
     }
 
@@ -64,10 +65,10 @@ class GoogleAuth
 
     public function checkLogged()
     {
-        if(isset($_SESSION['access_token'])){
+        if( Container::get('session')->isExist('access_token')){
             $model = new User();
-            $access_token = $model->getList(['access_token'],['email' => $_SESSION['email']])[0]['access_token'];
-            if($access_token === $_SESSION['access_token']){
+            $access_token = $model->getList(['access_token'],['email' => Container::get('session')->get('email')])[0]['access_token'];
+            if($access_token === Container::get('session')->get('access_token')){
                 return true;
             }
         }

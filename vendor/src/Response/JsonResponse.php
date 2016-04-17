@@ -1,19 +1,16 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ihor
- * Date: 14.04.16
- * Time: 5:10
- */
 
 namespace Vendor\Response;
 
 
-class JsonResponse extends Response implements ResponseInterface
+class JsonResponse extends Response
 {
 
-    public function send()
-    {
-       return json_encode(parent::send());
+    public function __construct($body = '', $status = 200){
+        parent::__construct($body,$status);
+        $this->setHeaders(array('Content-Type' => 'application/json'));
+        if('' != $body){
+            $this->body = json_encode($body);
+        }
     }
 }

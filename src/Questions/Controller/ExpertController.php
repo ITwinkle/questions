@@ -17,19 +17,26 @@ class ExpertController extends SecurityController
     }
 
     public function getExpertsAction($cat){
-        $experts = $this->model->getList(['expert.*'],['category_for_expert'=>null,'category'=>$cat]);
+        $experts = $this->model->getList(['expert.*'],['category_for_expert'=>null,'category'=>null,'alias'=>$cat]);
         $answer_model = new Answer();
         $rating = $answer_model->getRating();
         $count_answers = $answer_model->getCountAnswers();
-        $_SESSION['uri'] = $_SERVER['REQUEST_URI'];
+        Container::get('session')->set('uri',$_SERVER['REQUEST_URI']);
         return $this->render('experts.php', ['experts' => $experts, 'cat' => $cat, 'rating' => $rating,
             'count' => $count_answers]);
     }
 
-    public function searchAction($string){
-        $expert = User::search($string);
-        if(!empty($expert)){
-            return new JsonResponse($expert);
+    public function searchAction($string)
+    {
+        $cat = $this->getRequest()->post()['cat'];
+        $experts = $this->model->getList(['expert.*,category.name cat'],
+            ['category'=>null,'category_for_expert'=>null,'name'=>$string,'cat'=>$cat]);
+//        $answer_model = new Answer();
+//        $rating = $answer_model->getRating();
+//        $count_answers = $answer_model->getCountAnswers();
+        //$data = ['expert'=>$experts,'rating'=>$rating,'answers'=>$count_answers];
+        if(!empty($experts)){
+            return new JsonResponse($experts);
         } else {
             return [];
         }

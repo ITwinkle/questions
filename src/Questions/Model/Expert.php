@@ -7,13 +7,24 @@ class Expert extends Model
 {
     public $table = 'expert';
 
-
-
     public function buildWhere($query, array $parameters = [])
     {
-        if(array_key_exists('category',$parameters)){
-            $query .= ' where category.alias = \''.$parameters['category'].'\'';
+        if(array_key_exists('alias',$parameters)){
+            $query .= ' where category.alias = \''.$parameters['alias'].'\'';
         }
+
+        if(array_key_exists('name',$parameters)){
+            $query .= ' where expert.name like \'%'.$parameters['name'].'%\'';
+        }
+
+        if(array_key_exists('cat',$parameters)){
+            $query .= ' and category.name = \''.$parameters['cat'].'\'';
+        }
+
+        if(array_key_exists('expert',$parameters)){
+            $query .= ' where id =\''.$parameters['expert'].'\'';
+        }
+
 
         return $query;
     }
@@ -55,6 +66,8 @@ class Expert extends Model
         }
         return parent::buildOther($query, $parameters);;
     }
+
+
 //    public static function search($string){
 //        $query = 'select e.id, e.name, c.name as cat from expert e join category_for_expert cfe on (e.id = cfe.exp_id) join category c
 //                  on (c.id = cfe.cat_id) where e.name like \'%'.$string.'%\'';

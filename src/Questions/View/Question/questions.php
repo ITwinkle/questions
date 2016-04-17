@@ -27,7 +27,7 @@
                 <?php foreach($top as $t):?>
                     <h4><?php echo ++$i.'. '. $t['name']?></h4>
                     <img src="<?php echo $t['photo']?>" height="80" width="70">
-                    <h4>Rating: <?php echo $t['rating']?></h4>
+                    <p >Rating: <?php echo $t['rating']?></p>
                     <br><br>
                 <?php endforeach;?>
             </div>

@@ -13,7 +13,8 @@ class Application
     public function __construct($config)
     {
         static::$config = include $config;
-        session_start();
+
+        Container::set('session', new \Vendor\Session());
         try{
             Container::set('pdo', new \PDO(static::$config['pdo']['connect'],
                 static::$config['pdo']['username'],

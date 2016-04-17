@@ -23,7 +23,8 @@
     ],
     "require": {
         "google/apiclient": "2.0.*",
-        "guzzlehttp/guzzle": "5.2.*"
+        "guzzlehttp/guzzle": "5.2.*",
+        "swiftmailer/swiftmailer": "^5.4"
     },
     "autoload":{
          "psr-4": {

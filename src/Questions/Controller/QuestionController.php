@@ -23,12 +23,12 @@ class QuestionController extends BaseController
     public function getQuestionsAction()
     {
         $this->checkLogged();
-        $id = (new User())->getList(['id'],['email' => $_SESSION['email']])[0]['id'];
+        $id = (new User())->getList(['id'],['email' => Container::get('session')->get('email')])[0]['id'];
         $questions = $this->model->getList(['question.*, name, answer_text, rating, answer.id answer_id'],
             ['category_id'=>$id,'answer'=>$id,'order'=>['column'=>'question.date',
             'type'=>'desc']]);
         $top = (new Expert())->getTop(5);
-        $_SESSION['uri'] = $_SERVER['REQUEST_URI'];
+        Container::get('session')->set('uri',$_SERVER['REQUEST_URI']);
         return $this->render('questions.php', ['questions' => $questions, 'top' => $top]);
     }
 
@@ -42,7 +42,7 @@ class QuestionController extends BaseController
 
     public function getQuestionAnswerAction($hash)
     {
-        $_SESSION['uri'] = $_SERVER['REQUEST_URI'];
+        Container::get('session')->set('uri',$_SERVER['REQUEST_URI']);
         $question = $this->model->getList(['question.question_text','question.id',
         'question.expert_id','category.name','user.email'],['category'=>'','user'=>'', 'hash'=>$hash])[0];
         return $this->render('answer.php', ['question' => $question, 'hash' => $hash]);
@@ -58,8 +58,8 @@ class QuestionController extends BaseController
 
     public function getAskAction($cat, $id)
     {
+        $this->checkLogged();
         return $this->render('add.php', ['cat' => $cat, 'expert_id' => $id], false);
-
     }
 
     public function postAskAction($cat, $id)
@@ -69,7 +69,8 @@ class QuestionController extends BaseController
         $data['cat'] = $cat;
         $data['expert_id'] = $id;
         $data['hash'] = Random::random_string(10, 'lower,numbers');
-        $data['id'] = (new User())->getList(['id'],['email' => $_SESSION['email']])[0]['id'];
+        $data['id'] = (new User())->getList(['id'],['email' => Container::get('session')->get('email')])[0]['id'];
+        $data['email'] = (new Expert())->getList(['email'],['expert'=>$data['expert_id']])[0]['email'];
         $data['cat_id'] = (new Category())->getList(['id'],['name'=>$data['cat']])[0]['id'];
         $this->model->post([
             'author_id'=>$data['id'],
@@ -79,8 +80,7 @@ class QuestionController extends BaseController
             'date'=>$data['date'],
             'category_id'=>$data['cat_id']
         ]);
-
-        Email::sendEmail($data['question'], 'answer/' . $data['hash'], $id, 'question', $_SESSION['email']);
+        Email::sendEmail($data['question'], 'answer/' . $data['hash'], $data['email'], 'question', Container::get('session')->get('email') );
         return $this->render('add.php', ['data' => $data, 'id' => $id]);
     }
 

@@ -9,5 +9,9 @@ return [
         'connect' => 'mysql:host=localhost;dbname=questions',
         'username' => 'root',
         'password' => 'independent12'
+    ],
+    'swiftmailer' => [
+        'username' => 'anishchenko.igor@gmail.com',
+        'password' => 'independent12'
     ]
 ];
