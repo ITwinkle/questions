@@ -1,4 +1,13 @@
 <?php
+/**
+ * Configuration file
+ *
+ * @package    app
+ * @version    1.0
+ * @author     Ihor Anishchenko <ianischenko@mindk.com>
+ * @copyright  2016 - 2017 Ihor Anischenko
+ */
+
 return [
     'routes' => include('routes.php'),
     'layout' => __DIR__.'/../../src/Questions/View/layout.php',

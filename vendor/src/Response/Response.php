@@ -1,11 +1,23 @@
 <?php
 
+/**
+ * Response class
+ *
+ * @package    vendor
+ * @version    1.0
+ * @author     Ihor Anishchenko <ianischenko@mindk.com>
+ * @copyright  2016 - 2017 Ihor Anischenko
+ */
+
 namespace Vendor\Response;
 
 use Vendor\Response\ResponseInterface;
 
 class Response implements ResponseInterface
 {
+    /**
+     * @var array
+     */
     protected static $messages = [
         // Information 1xx
         100 => 'Continue',
@@ -60,36 +72,73 @@ class Response implements ResponseInterface
         509 => 'Bandwidth Limit Exceeded'
     ];
 
+    /**
+     * @var array
+     */
     protected $headers = array();
 
+    /**
+     * @var string
+     */
     protected $body = '';
 
+    /**
+     * @var int
+     */
     protected $status;
 
+    /**
+     * Response constructor.
+     * @param string $body
+     * @param int $status
+     */
     public function __construct($body = '', $status = 200)
     {
         $this->setBody($body);
         $this->setStatus($status);
     }
 
+    /**
+     * Set response statuses
+     *
+     * @param $status
+     * @return $this
+     */
     public function setStatus($status)
     {
         $this->status = $status;
         return $this;
     }
 
+    /**
+     * Set response body
+     *
+     * @param $body
+     * @return $this
+     */
     public function setBody($body)
     {
         $this->body = $body;
         return $this;
     }
 
+    /**
+     * Set response headers
+     *
+     * @param array $header
+     * @return $this
+     */
     public function setHeaders(array $header)
     {
         $this->headers = array_merge($this->headers, $header);
         return $this;
     }
 
+    /**
+     * Form status line
+     *
+     * @return $this
+     */
     public function sendHeaders()
     {
         $status_line = 'HTTP/1.1 ' . $this->status . ' ' . self::$messages[$this->status];
@@ -100,6 +149,9 @@ class Response implements ResponseInterface
         return $this;
     }
 
+    /**
+     * Send response
+     */
     public function send()
     {
         if (0 != count($this->headers)) {

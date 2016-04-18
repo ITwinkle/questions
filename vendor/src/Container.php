@@ -1,16 +1,40 @@
 <?php
 
+/**
+ *  Service container class
+ *
+ * @package    vendor
+ * @version    1.0
+ * @author     Ihor Anishchenko <ianischenko@mindk.com>
+ * @copyright  2016 - 2017 Ihor Anischenko
+ */
+
 namespace Vendor;
 
 class Container
 {
+    /**
+     * @var array
+     */
     static $services = [];
 
+    /**
+     * Services
+     *
+     * @param $name
+     * @param $service
+     */
     public static function set($name, $service)
     {
         self::$services[$name] = $service;
     }
 
+    /**
+     * Get service
+     *
+     * @param $name
+     * @return mixed
+     */
     public static function get($name)
     {
         if (isset(self::$services[$name])) {
@@ -23,11 +47,17 @@ class Container
             }
             return $class;
         } else {
-            //throw new Exception('No such service in container');
+            throw new Exception('No such service in container');
         }
     }
 
-    public static function delete($name){
+    /**
+     * Delete service from container
+     *
+     * @param $name
+     */
+    public static function delete($name)
+    {
         unset(self::$services[$name]);
     }
 }

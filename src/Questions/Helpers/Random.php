@@ -1,9 +1,25 @@
 <?php
 
+/**
+ *  Random string helper
+ *
+ * @package    questions
+ * @version    1.0
+ * @author     Ihor Anishchenko <ianischenko@mindk.com>
+ * @copyright  2016 - 2017 Ihor Anischenko
+ */
+
 namespace Questions\Helpers;
 
 class Random
 {
+    /**
+     * Generate random sting
+     *
+     * @param $length
+     * @param $chartypes
+     * @return string
+     */
     public static function random_string($length, $chartypes)
     {
         $chartypes_array = explode(",", $chartypes);

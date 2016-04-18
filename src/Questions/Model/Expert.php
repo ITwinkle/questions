@@ -1,12 +1,28 @@
 <?php
 
+/**
+ *  Expert model
+ *
+ * @package    questions
+ * @version    1.0
+ * @author     Ihor Anishchenko <ianischenko@mindk.com>
+ * @copyright  2016 - 2017 Ihor Anischenko
+ */
+
 namespace Questions\Model;
+
 use Vendor\Model;
 
 class Expert extends Model
 {
+    /**
+     * @var string
+     */
     public $table = 'expert';
 
+    /**
+     * @inheritdoc
+     */
     public function buildWhere($query, array $parameters = [])
     {
         if (array_key_exists('alias', $parameters)) {
@@ -29,6 +45,9 @@ class Expert extends Model
         return $query;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function buildJoin($query, array $parameters = [])
     {
         if (array_key_exists('category_for_expert', $parameters)) {
@@ -46,6 +65,12 @@ class Expert extends Model
         return $query;
     }
 
+    /**
+     * Get top experts in all categories
+     *
+     * @param $limit
+     * @return mixed
+     */
     public function getTop($limit)
     {
         $top = $this->getList(['photo,name, avg(rating) rating'],
@@ -59,6 +84,9 @@ class Expert extends Model
         return $top;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function buildOther($query, array $parameters = [])
     {
 
@@ -68,6 +96,13 @@ class Expert extends Model
         return parent::buildOther($query, $parameters);;
     }
 
+    /**
+     * Get result of search
+     *
+     * @param $string
+     * @param $cat
+     * @return mixed
+     */
     public function getSearchResult($string, $cat)
     {
         $experts = $this->getList(['expert.*,category.name cat'],

@@ -1,5 +1,14 @@
 <?php
 
+/**
+ *  Autoloader class
+ *
+ * @package    vendor
+ * @version    1.0
+ * @author     Ihor Anishchenko <ianischenko@mindk.com>
+ * @copyright  2016 - 2017 Ihor Anischenko
+ */
+
 class Autoloader
 {
     public static $aliases = [];
