@@ -26,14 +26,6 @@ class Model
     }
 
     protected function buildJoin($query, array $parameters = []){
-        if(array_key_exists('join', $parameters)){
-            for($i = 0; $i < count($parameters['join']['table']);$i++){
-                $query .= ' join '.$parameters['join']['table'][$i] .
-                    ' ON('.$parameters['join']['fcolumn'][$i].'='.
-                    $parameters['join']['scolumn'][$i].')';
-            }
-        }
-
         return $query;
     }
 

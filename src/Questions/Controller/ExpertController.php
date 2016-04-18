@@ -28,7 +28,7 @@ class ExpertController extends SecurityController
 
     public function searchAction($string)
     {
-        $cat = $this->getRequest()->post()['cat'];
+        $cat = $this->getRequest()->post('cat');
         $experts = $this->model->getSearchResult($string,$cat);
 
         if(!empty($experts)){

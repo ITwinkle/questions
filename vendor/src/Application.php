@@ -15,15 +15,10 @@ class Application
         static::$config = include $config;
 
         Container::set('session', new \Vendor\Session());
-        try{
-            Container::set('pdo', new \PDO(static::$config['pdo']['connect'],
-                static::$config['pdo']['username'],
-                static::$config['pdo']['password']));
-            Model::setPDO(Container::get('pdo'));
-        } catch (PDOException $e) {
-            print "Error!: " . $e->getMessage() . "<br/>";
-            die();
-        }
+        Container::set('pdo', new \PDO(static::$config['pdo']['connect'],
+            static::$config['pdo']['username'],
+            static::$config['pdo']['password']));
+        Model::setPDO(Container::get('pdo'));
         Container::set('auth', new \Vendor\Auth\GoogleAuth());
         Container::set('router',new \Vendor\Router());
         Container::set('request',new \Vendor\Request());
@@ -40,7 +35,7 @@ class Application
             if (class_exists($controllerClass)) {
                 $refl = new \ReflectionClass($controllerClass);
             } else {
-                (new Response(Container::get('view')->render(static::$config['error404'])))->send();
+                throw new \Exception();
             }
             if ($refl->hasMethod($actionClass)) {
                 $controller     = $refl->newInstance();
@@ -54,10 +49,10 @@ class Application
                 }
 
             } else {
-                (new Response(Container::get('view')->render(static::$config['error404'])))->send();
+                throw new \Exception();
             }
         } catch (Exception $e){
-            (new Response(Container::get('view')->render(static::$config['error404'])))->send();
+            throw new \Exception();
         }
     }
 
