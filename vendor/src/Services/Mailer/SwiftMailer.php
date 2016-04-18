@@ -1,6 +1,6 @@
 <?php
 
-namespace Vendor\Services;
+namespace Vendor\Services\Mailer;
 
 
 use Vendor\Application;
@@ -16,7 +16,8 @@ class SwiftMailer
             ->setFrom('anishchenko.igor@gmail.com')
             ->setTo($to)
             ->setSubject($subject)
-            ->setBody($text);
+            ->setBody($text)
+            ->setContentType('text/html');
 
         $mailer->send($message);
     }

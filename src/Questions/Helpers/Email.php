@@ -3,16 +3,16 @@
 namespace Questions\Helpers;
 
 use Vendor\Container;
+use Vendor\View;
 
 class Email
 {
     public static function sendEmail($text, $id, $email, $type,$to_exp = false)
     {
-        $email_text = 'Hi! You have a ' . $type . ':
-         ' . $text . '
-         Url: questions.com/' . $id;
         if ($to_exp) {
-            $email_text .= '! Author of question: ' . $to_exp;
+            $email_text = (new View())->render(View::$renderPath.'Email/expert.php',['text'=>$text,'url'=>$id,'author'=>$to_exp]);
+        } else {
+            $email_text = (new View())->render(View::$renderPath.'Email/user.php',['text'=>$text,'url'=>$id]);
         }
         $subject = strtoupper($type);
         $to = $email;

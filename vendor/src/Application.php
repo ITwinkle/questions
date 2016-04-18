@@ -23,7 +23,7 @@ class Application
         Container::set('router',new \Vendor\Router());
         Container::set('request',new \Vendor\Request());
         Container::set('view', new \Vendor\View());
-        Container::set('email', new \Vendor\Services\SwiftMailer());
+        Container::set('email', new \Vendor\Services\Mailer\SwiftMailer());
         Container::get('router')->set(static::$config['routes']);
     }
 
