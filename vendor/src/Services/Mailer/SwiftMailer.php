@@ -13,7 +13,7 @@ namespace Vendor\Services\Mailer;
 
 use Vendor\Application;
 
-class SwiftMailer
+class SwiftMailer implements MailerInterface
 {
     /**
      * @inheritdoc

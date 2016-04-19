@@ -11,7 +11,7 @@
 
 namespace Vendor\Services\Mailer;
 
-class MailerInterface
+interface MailerInterface
 {
     /**
      * Send message
@@ -20,7 +20,5 @@ class MailerInterface
      * @param $subject - mail subject
      * @param $to - destination email
      */
-    public function send($text, $subject, $to)
-    {
-    }
+    public static function send($text, $subject, $to);
 }
