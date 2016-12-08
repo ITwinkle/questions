@@ -1,3 +1,6 @@
 .idea
 access.log
 error.log
+app/config/config.php
+vendor/*
+!vendor/src
